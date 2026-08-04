@@ -21,13 +21,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.darwin.ticketx.feature_user.presentation.components.ProfileHeader
 import com.darwin.ticketx.feature_user.presentation.components.ProfileItem
 import com.darwin.ticketx.feature_user.presentation.components.ProfileSection
 import com.darwin.ticketx.feature_user.presentation.components.ProfileSwitchItem
+import com.darwin.ticketx.feature_user.presentation.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
 
     var darkMode by remember {
         mutableStateOf(false)
@@ -145,7 +149,9 @@ fun ProfileScreen() {
                     icon = Icons.Default.Logout,
                     title = "Sign Out",
                     destructive = true
-                ) {}
+                ) {
+                    viewModel.logout()
+                }
 
             }
 

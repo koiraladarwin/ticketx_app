@@ -23,8 +23,13 @@ class AuthAuthenticator @Inject constructor(
         route: Route?,
         response: Response
     ): Request? {
-        Log.d("Testing","Authenticator triggered")
+        Log.d("Testing", "authenticator triggered 1")
         if (responseCount(response) >= 2) {
+            Log.d("Testing", "authenticator triggered 2")
+            runBlocking {
+                tokenManager.clearTokens()
+                sessionManager.logout()
+            }
             return null
         }
 
@@ -32,7 +37,13 @@ class AuthAuthenticator @Inject constructor(
             runBlocking {
                 tokenManager.getRefreshToken()
             }
-                ?: return null
+                ?: run {
+                    runBlocking {
+                        tokenManager.clearTokens()
+                        sessionManager.logout()
+                    }
+                    return null
+                }
 
         val newToken = try {
             runBlocking {
@@ -41,11 +52,13 @@ class AuthAuthenticator @Inject constructor(
                         token = refreshToken
                     )
                 )
-                Log.d("Testing", res.token)
                 res.token
             }
         } catch (e: Exception) {
-            Log.d("Testing", e.message.toString())
+            runBlocking {
+                tokenManager.clearTokens()
+                sessionManager.logout()
+            }
             null
         }
 
@@ -56,7 +69,7 @@ class AuthAuthenticator @Inject constructor(
             }
             return null
         }
-        Log.d("Testing","Authenticator triggered 2")
+
         runBlocking {
             tokenManager.saveAccessToken(
                 newToken

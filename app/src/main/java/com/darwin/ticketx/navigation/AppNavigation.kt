@@ -1,6 +1,7 @@
 package com.darwin.ticketx.navigation
 
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
@@ -15,7 +16,7 @@ fun AppNavGraph(
 
     LaunchedEffect(Unit) {
         sessionManager.logout.collect {
-
+            Log.d("Testing","session manager triggered")
             rootNavController.navigate(Graph.Auth) {
                 popUpTo(rootNavController.graph.id) {
                     inclusive = true
@@ -27,7 +28,7 @@ fun AppNavGraph(
 
     NavHost(
         navController = rootNavController,
-        startDestination = Graph.Auth
+        startDestination = Graph.Main
     ) {
         authNavGraph(rootNavController)
         mainNavGraph(rootNavController)

@@ -20,7 +20,7 @@ sealed class Screen(
     data object Tickets : Screen(
         route = "tickets",
         title = "Tickets",
-        showTopBar = true,
+        showTopBar = false,
         showBottomBar = true
     )
 

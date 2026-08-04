@@ -20,6 +20,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.*
 import com.darwin.ticketx.feature_ticket.presentation.EventDetailsScreen
 import com.darwin.ticketx.feature_ticket.presentation.HomeScreen
+import com.darwin.ticketx.feature_ticket.presentation.TicketScreen
+import com.darwin.ticketx.feature_ticket.presentation.sampleTickets
 import com.darwin.ticketx.feature_user.presentation.screens.ProfileScreen
 import com.darwin.ticketx.ui.theme.Border
 
@@ -167,7 +169,7 @@ fun MainRoot() {
             }
 
             composable(Screen.Tickets.route) {
-                TicketScreen()
+                TicketScreen(sampleTickets){}
             }
 
             composable(Screen.Profile.route) {
@@ -200,15 +202,7 @@ fun MainRoot() {
 }
 
 
-@Composable
-private fun TicketScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Tickets")
-    }
-}
+
 
 
 @Composable

@@ -3,13 +3,16 @@ package com.darwin.ticketx.core.network
 
 import android.util.Log
 import com.darwin.ticketx.core.local.TokenManager
+import com.darwin.ticketx.core.session.SessionManager
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 
 class AuthInterceptor @Inject constructor(
-    private val tokenManager: TokenManager
+    private val tokenManager: TokenManager,
+    private val sessionManager: SessionManager
 ) : Interceptor {
 
 
@@ -22,6 +25,7 @@ class AuthInterceptor @Inject constructor(
         val request =
             chain.request()
                 .newBuilder()
+
 
         if (token != null) {
             request.addHeader(
