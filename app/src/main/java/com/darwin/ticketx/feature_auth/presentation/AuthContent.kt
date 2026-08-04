@@ -20,7 +20,8 @@ import com.darwin.ticketx.ui.theme.TicketXTheme
 fun AuthContent(
     modifier: Modifier = Modifier,
     state: AuthState,
-    onLogin: (String,String) -> Unit
+    onLogin: (String,String) -> Unit,
+    onSignupClick :()-> Unit
 ) {
     LaunchedEffect(Unit) {
         println("AuthContent loaded: ${hashCode()}")
@@ -164,7 +165,7 @@ fun AuthContent(
 
             TextButton(
                 contentPadding = PaddingValues(0.dp),
-                onClick = { }
+                onClick = onSignupClick
             ) {
                 Text("Sign Up")
             }
@@ -183,7 +184,9 @@ private fun AuthPreview() {
     TicketXTheme {
         AuthContent(
             state = AuthState.Idle,
-            onLogin = { _,_->}
+            onLogin = { _, _ -> },
+            modifier = TODO(),
+            onSignupClick = TODO()
         )
     }
 }
@@ -197,7 +200,9 @@ private fun AuthLoadingPreview() {
     TicketXTheme {
         AuthContent(
             state = AuthState.Loading,
-            onLogin = {_,_->}
+            onLogin = { _, _ -> },
+            modifier = TODO(),
+            onSignupClick = TODO()
         )
     }
 }
@@ -211,7 +216,9 @@ private fun AuthErrorPreview() {
     TicketXTheme {
         AuthContent(
             state = AuthState.Error("Invalid email or password."),
-            onLogin = {_,_-> }
+            onLogin = { _, _ -> },
+            modifier = TODO(),
+            onSignupClick = TODO()
         )
     }
 }

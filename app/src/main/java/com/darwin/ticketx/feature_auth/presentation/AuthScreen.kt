@@ -13,6 +13,8 @@ import com.darwin.ticketx.feature_auth.domain.model.User
 fun AuthScreen(
     modifier: Modifier = Modifier,
     onLoginSuccess: (User) -> Unit,
+    onSignupClick : ()->Unit,
+    onForgotPasswordClick : ()->Unit,
     vm: AuthViewModel = hiltViewModel()
 ) {
 
@@ -27,6 +29,7 @@ fun AuthScreen(
     AuthContent(
         modifier = modifier,
         state = state,
-        onLogin = vm::login
+        onLogin = vm::login,
+        onSignupClick = onSignupClick
     )
 }

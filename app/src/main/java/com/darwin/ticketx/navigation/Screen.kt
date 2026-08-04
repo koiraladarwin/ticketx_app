@@ -9,6 +9,8 @@ sealed class Screen(
 ) {
 
     data object Login : Screen("login")
+    data object SignUp : Screen("signup")
+    data object ForgotPassword : Screen("forgot_password")
 
     data object Home : Screen(
         route = "home",

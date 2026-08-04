@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.darwin.ticketx.feature_auth.presentation.AuthScreen
+import com.darwin.ticketx.feature_auth.presentation.SignupScreen
+import okhttp3.Route
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavController
@@ -24,6 +26,23 @@ fun NavGraphBuilder.authNavGraph(
                             inclusive = true
                         }
                     }
+                },
+
+                onSignupClick = {
+                    navController.navigate(Screen.SignUp.route)
+                },
+                onForgotPasswordClick = {}
+            )
+        }
+        composable(
+            Screen.SignUp.route
+        ) {
+            SignupScreen(
+                onLoginClick = {
+                    navController.navigate(Screen.Login.route)
+                },
+                onSignupSuccess = {
+                    navController.navigate(Screen.Login.route)
                 }
             )
         }
