@@ -18,11 +18,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
 
 @Composable
 fun FeaturedEventCard(
-    event: EventUi,
+    event: EventModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

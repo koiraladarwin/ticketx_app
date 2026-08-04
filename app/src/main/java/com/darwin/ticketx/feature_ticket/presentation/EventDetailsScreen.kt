@@ -34,12 +34,34 @@ fun EventDetailsScreen(
     viewModel: EventDetailsViewModel = hiltViewModel()
 ) {
 
+
     val state by viewModel.state.collectAsState()
 
 
-    LaunchedEffect(eventId) {
-        viewModel.loadEvent(eventId)
+    val snackbarHostState = remember {
+        SnackbarHostState()
     }
+
+
+    LaunchedEffect(eventId) {
+
+        viewModel.loadEvent(eventId)
+
+    }
+
+
+    LaunchedEffect(state.purchaseMessage) {
+
+        state.purchaseMessage?.let {
+
+            snackbarHostState.showSnackbar(
+                it
+            )
+
+        }
+
+    }
+
 
 
     if (state.isLoading) {
@@ -55,6 +77,7 @@ fun EventDetailsScreen(
 
         return
     }
+
 
 
     if (state.error != null) {
@@ -75,7 +98,9 @@ fun EventDetailsScreen(
     }
 
 
+
     val event = state.event ?: return
+
 
 
     var showTicketSheet by remember {
@@ -83,13 +108,25 @@ fun EventDetailsScreen(
     }
 
 
+
     Scaffold(
+
         contentWindowInsets = WindowInsets(0),
+
+        snackbarHost = {
+            SnackbarHost(
+                snackbarHostState
+            )
+        },
+
+
         bottomBar = {
+
 
             Surface(
                 shadowElevation = 8.dp
             ) {
+
 
                 Row(
                     modifier = Modifier
@@ -98,13 +135,16 @@ fun EventDetailsScreen(
                             horizontal = 20.dp,
                             vertical = 14.dp
                         ),
+
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
 
 
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
+
 
                         Text(
                             text = "Starting from",
@@ -114,44 +154,83 @@ fun EventDetailsScreen(
 
 
                         Text(
-                            text = "Rs ${event.ticketTypes.minOfOrNull { it.price } ?: 0}",
+                            text = "Rs ${
+                                event.ticketTypes.minOfOrNull {
+                                    it.price
+                                } ?: 0
+                            }",
+
                             style = MaterialTheme.typography.titleMedium,
+
                             fontWeight = FontWeight.Bold
                         )
 
+
                     }
+
 
 
                     Button(
+
+                        enabled = !state.isPurchasing,
+
                         onClick = {
+
                             showTicketSheet = true
+
                         },
+
                         shape = RoundedCornerShape(18.dp)
+
                     ) {
 
-                        Text(
-                            "Buy Ticket"
-                        )
+
+                        if(state.isPurchasing){
+
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+
+
+                        }else{
+
+
+                            Text(
+                                "Buy Ticket"
+                            )
+
+                        }
+
 
                     }
 
+
                 }
+
 
             }
 
+
         }
+
 
     ) { padding ->
 
 
+
+
         Column(
+
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(
                     rememberScrollState()
                 )
+
         ) {
+
 
 
             Box {
@@ -168,22 +247,38 @@ fun EventDetailsScreen(
                         .height(300.dp),
 
                     contentScale = ContentScale.Crop
+
                 )
+
 
 
                 Box(
+
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp)
+
                         .background(
+
                             Brush.verticalGradient(
+
                                 listOf(
+
                                     Color.Transparent,
-                                    Color.Black.copy(alpha = .55f)
+
+                                    Color.Black.copy(
+                                        alpha = .55f
+                                    )
+
                                 )
+
                             )
+
                         )
+
                 )
+
+
 
 
                 Row(
@@ -195,6 +290,7 @@ fun EventDetailsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
+
 
 
                     IconButton(
@@ -209,13 +305,17 @@ fun EventDetailsScreen(
 
                     ) {
 
+
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = null,
                             tint = Color.White
                         )
 
+
                     }
+
+
 
 
                     IconButton(
@@ -230,26 +330,32 @@ fun EventDetailsScreen(
 
                     ) {
 
+
                         Icon(
                             Icons.Default.Share,
                             contentDescription = null,
                             tint = Color.White
                         )
 
+
                     }
 
+
                 }
+
 
             }
 
 
 
+
+
             Column(
 
-                modifier = Modifier
-                    .padding(20.dp)
+                modifier = Modifier.padding(20.dp)
 
             ) {
+
 
 
                 Surface(
@@ -259,6 +365,7 @@ fun EventDetailsScreen(
                     shape = RoundedCornerShape(50)
 
                 ) {
+
 
                     Text(
 
@@ -274,7 +381,9 @@ fun EventDetailsScreen(
                         style = MaterialTheme.typography.labelMedium,
 
                         fontWeight = FontWeight.Bold
+
                     )
+
 
                 }
 
@@ -283,6 +392,7 @@ fun EventDetailsScreen(
                 Spacer(
                     Modifier.height(12.dp)
                 )
+
 
 
                 Text(
@@ -297,20 +407,26 @@ fun EventDetailsScreen(
 
 
 
+
                 Spacer(
                     Modifier.height(18.dp)
                 )
 
 
+
                 InfoCard(
                     icon = {
+
                         Icon(
                             Icons.Default.CalendarMonth,
                             null
                         )
+
                     },
+
                     text = event.date
                 )
+
 
 
                 Spacer(
@@ -318,15 +434,21 @@ fun EventDetailsScreen(
                 )
 
 
+
                 InfoCard(
                     icon = {
+
                         Icon(
                             Icons.Default.LocationOn,
                             null
                         )
+
                     },
+
                     text = event.location
                 )
+
+
 
 
 
@@ -335,15 +457,15 @@ fun EventDetailsScreen(
                 )
 
 
-                Text(
 
+                Text(
                     text = "About Event",
 
                     style = MaterialTheme.typography.titleLarge,
 
                     fontWeight = FontWeight.Bold
-
                 )
+
 
 
                 Spacer(
@@ -351,14 +473,13 @@ fun EventDetailsScreen(
                 )
 
 
-                Text(
 
+                Text(
                     text = event.description,
 
                     style = MaterialTheme.typography.bodyLarge,
 
                     color = MaterialTheme.colorScheme.onSurfaceVariant
-
                 )
 
 
@@ -370,19 +491,19 @@ fun EventDetailsScreen(
 
 
                 Text(
-
                     text = "Tags",
 
                     style = MaterialTheme.typography.titleLarge,
 
                     fontWeight = FontWeight.Bold
-
                 )
+
 
 
                 Spacer(
                     Modifier.height(12.dp)
                 )
+
 
 
                 Row(
@@ -391,7 +512,9 @@ fun EventDetailsScreen(
 
                 ) {
 
+
                     event.tags.forEach { tag ->
+
 
                         AssistChip(
 
@@ -403,40 +526,69 @@ fun EventDetailsScreen(
 
                         )
 
+
                     }
 
+
                 }
+
 
 
                 Spacer(
                     Modifier.height(100.dp)
                 )
 
+
             }
+
+
 
         }
 
+
     }
+
+
 
 
 
     if(showTicketSheet){
 
+
         TicketBottomSheet(
+
             event = event,
+
+
             onDismiss = {
+
                 showTicketSheet = false
+
             },
+
+
             onPurchase = { ticket ->
 
-                // later:
-                // call API here
+
+                viewModel.purchaseTicket(
+
+                    ticketTypeId = ticket.id
+
+                )
+
 
                 showTicketSheet = false
+
+
             }
+
+
         )
 
+
     }
+
+
 
 }
 
@@ -448,6 +600,7 @@ private fun InfoCard(
     text: String
 ){
 
+
     Row(
 
         modifier = Modifier
@@ -458,18 +611,24 @@ private fun InfoCard(
             )
             .padding(14.dp),
 
+
         verticalAlignment = Alignment.CenterVertically
 
     ){
 
+
         icon()
+
 
         Spacer(
             Modifier.width(12.dp)
         )
 
+
         Text(text)
 
+
     }
+
 
 }

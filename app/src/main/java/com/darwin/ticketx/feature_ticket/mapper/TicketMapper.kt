@@ -1,7 +1,7 @@
 package com.darwin.ticketx.feature_ticket.mapper
 
 import com.darwin.ticketx.feature_ticket.data.dto.TicketTypeDto
-import com.darwin.ticketx.feature_ticket.presentation.TicketTypeUi
+import com.darwin.ticketx.feature_ticket.domain.model.TicketTypeUi
 
 fun TicketTypeDto.toTicketTypeUi(): TicketTypeUi {
     return TicketTypeUi(

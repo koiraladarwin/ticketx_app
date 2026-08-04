@@ -23,12 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
 
 
 @Composable
 fun EventCard(
-    event: EventUi,
+    event: EventModel,
     onClick: () -> Unit
 ) {
 

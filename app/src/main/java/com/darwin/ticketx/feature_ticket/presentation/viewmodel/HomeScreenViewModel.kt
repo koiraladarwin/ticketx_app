@@ -2,9 +2,8 @@ package com.darwin.ticketx.feature_ticket.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
 import com.darwin.ticketx.feature_ticket.domain.repository.EventRepository
-import com.darwin.ticketx.feature_ticket.presentation.HomeUiState
+import com.darwin.ticketx.feature_ticket.presentation.state.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

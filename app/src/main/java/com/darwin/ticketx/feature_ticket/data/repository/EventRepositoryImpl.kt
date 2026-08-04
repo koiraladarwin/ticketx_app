@@ -4,11 +4,12 @@ package com.darwin.ticketx.feature_ticket.data.repository
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.darwin.ticketx.feature_ticket.data.api.EventApi
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
+import com.darwin.ticketx.feature_ticket.data.dto.PurchaseRequest
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
 import com.darwin.ticketx.feature_ticket.domain.repository.EventRepository
 import com.darwin.ticketx.feature_ticket.mapper.toEventDetailsUi
 import com.darwin.ticketx.feature_ticket.mapper.toEventUiList
-import com.darwin.ticketx.feature_ticket.presentation.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventDetailsUi
 import javax.inject.Inject
 
 
@@ -18,7 +19,7 @@ class EventRepositoryImpl @Inject constructor(
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getEvents(): Result<List<EventUi>> {
+    override suspend fun getEvents(): Result<List<EventModel>> {
 
         return try {
 
@@ -79,4 +80,61 @@ class EventRepositoryImpl @Inject constructor(
 
         }
     }
+
+    override suspend fun purchaseTicket(
+        ticketTypeId: String
+    ): Result<Boolean> {
+
+        return try {
+
+            val response = api.purchaseTicket(
+                PurchaseRequest(
+                    ticket_type_id = ticketTypeId
+                )
+            )
+
+
+            when {
+                response.isSuccessful -> {
+                    Result.success(true)
+                }
+
+
+                response.code() == 404 -> {
+                    Result.failure(
+                        Exception(
+                            "Ticket not found"
+                        )
+                    )
+                }
+
+
+                response.code() == 409 -> {
+                    Result.failure(
+                        Exception(
+                            "Ticket already purchased"
+                        )
+                    )
+                }
+
+
+                else -> {
+                    Result.failure(
+                        Exception(
+                            "Purchase failed"
+                        )
+                    )
+                }
+
+            }
+
+
+        } catch (e: Exception) {
+
+            Result.failure(e)
+
+        }
+
+    }
+
 }

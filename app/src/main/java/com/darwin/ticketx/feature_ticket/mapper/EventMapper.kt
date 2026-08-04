@@ -5,15 +5,15 @@ import androidx.annotation.RequiresApi
 import com.darwin.ticketx.feature_ticket.data.dto.DataDetailsDto
 import com.darwin.ticketx.feature_ticket.data.dto.DataDto
 
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
-import com.darwin.ticketx.feature_ticket.presentation.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
+import com.darwin.ticketx.feature_ticket.domain.model.EventDetailsUi
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun DataDto.toEventUi(): EventUi {
-    return EventUi(
+fun DataDto.toEventUi(): EventModel {
+    return EventModel(
         id = id,
         title = title,
         venue = venue,
@@ -24,7 +24,7 @@ fun DataDto.toEventUi(): EventUi {
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun List<DataDto>.toEventUiList(): List<EventUi> {
+fun List<DataDto>.toEventUiList(): List<EventModel> {
     return map { it.toEventUi() }
 }
 

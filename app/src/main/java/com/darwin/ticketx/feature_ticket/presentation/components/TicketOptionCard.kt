@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.darwin.ticketx.feature_ticket.presentation.TicketTypeUi
+import com.darwin.ticketx.feature_ticket.domain.model.TicketTypeUi
 
 
 @Composable

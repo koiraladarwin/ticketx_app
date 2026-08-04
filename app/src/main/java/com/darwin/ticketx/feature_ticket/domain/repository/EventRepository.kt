@@ -1,14 +1,18 @@
 package com.darwin.ticketx.feature_ticket.domain.repository
 
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
-import com.darwin.ticketx.feature_ticket.presentation.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
+import com.darwin.ticketx.feature_ticket.domain.model.EventDetailsUi
 
 interface EventRepository {
 
-    suspend fun getEvents(): Result<List<EventUi>>
+    suspend fun getEvents(): Result<List<EventModel>>
 
     suspend fun getEventDetails(
         id: String
     ): Result<EventDetailsUi>
+
+    suspend fun purchaseTicket(
+        ticketTypeId: String
+    ): Result<Boolean>
 
 }

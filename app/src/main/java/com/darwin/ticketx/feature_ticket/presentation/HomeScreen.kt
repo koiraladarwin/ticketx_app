@@ -23,14 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.darwin.ticketx.feature_ticket.domain.model.EventUi
+import com.darwin.ticketx.feature_ticket.domain.model.EventModel
 import com.darwin.ticketx.feature_ticket.presentation.components.FeaturedCarousel
 import com.darwin.ticketx.feature_ticket.presentation.viewmodel.HomeViewModel
 
 
 @Composable
 fun HomeScreen(
-    onEventClick: (EventUi) -> Unit,
+    onEventClick: (EventModel) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
