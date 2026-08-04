@@ -169,7 +169,7 @@ fun MainRoot() {
             }
 
             composable(Screen.Tickets.route) {
-                TicketScreen(sampleTickets){}
+                TicketScreen()
             }
 
             composable(Screen.Profile.route) {

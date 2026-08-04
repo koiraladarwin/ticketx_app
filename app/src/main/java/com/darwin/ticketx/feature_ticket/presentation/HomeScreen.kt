@@ -34,13 +34,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-
     val state by viewModel.state.collectAsState()
 
-
     when {
-
-
         state.isLoading -> {
 
             Box(
@@ -49,11 +45,9 @@ fun HomeScreen(
             ) {
 
                 CircularProgressIndicator()
-
             }
 
         }
-
 
         state.error != null && state.events.isEmpty() -> {
 
@@ -66,14 +60,11 @@ fun HomeScreen(
                     text = state.error ?: "Something went wrong",
                     color = MaterialTheme.colorScheme.error
                 )
-
             }
-
         }
 
 
         state.events.isEmpty() -> {
-
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -82,17 +73,12 @@ fun HomeScreen(
                 Text(
                     text = "No events available"
                 )
-
             }
-
         }
-
 
         else -> {
 
-
             val refreshState = rememberPullToRefreshState()
-
 
             PullToRefreshBox(
                 isRefreshing = state.isRefreshing,
@@ -102,7 +88,6 @@ fun HomeScreen(
                 state = refreshState,
                 modifier = Modifier.fillMaxSize()
             ) {
-
 
                 LazyVerticalGrid(
 
@@ -118,40 +103,27 @@ fun HomeScreen(
                     ),
 
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-
                     verticalArrangement = Arrangement.spacedBy(20.dp)
 
                 ) {
-
-
                     item(
                         span = { GridItemSpan(2) }
                     ) {
-
-
                         FeaturedCarousel(
                             events = state.events.take(6),
                             onClick = onEventClick
                         )
-
                     }
-
-
 
                     item(
                         span = { GridItemSpan(2) }
                     ) {
-
-
                         Text(
                             text = "Upcoming Events",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
-
                     }
-
-
 
                     items(
                         items = state.events,
@@ -159,30 +131,20 @@ fun HomeScreen(
                             it.id
                         }
                     ) { event ->
-
-
                         EventCard(
                             event = event,
                             onClick = {
                                 onEventClick(event)
                             }
                         )
-
                     }
-
-
-
                     item(
                         span = { GridItemSpan(2) }
                     ) {
-
-
                         Spacer(
                             modifier = Modifier.navigationBarsPadding()
                         )
-
                     }
-
                 }
             }
         }

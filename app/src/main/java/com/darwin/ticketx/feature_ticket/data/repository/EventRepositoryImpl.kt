@@ -10,6 +10,8 @@ import com.darwin.ticketx.feature_ticket.domain.repository.EventRepository
 import com.darwin.ticketx.feature_ticket.mapper.toEventDetailsUi
 import com.darwin.ticketx.feature_ticket.mapper.toEventUiList
 import com.darwin.ticketx.feature_ticket.domain.model.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.domain.model.TicketModel
+import com.darwin.ticketx.feature_ticket.mapper.toTicketUiStateList
 import javax.inject.Inject
 
 
@@ -135,6 +137,33 @@ class EventRepositoryImpl @Inject constructor(
 
         }
 
+    }
+
+    override suspend fun getMyTickets(): Result<List<TicketModel>> {
+
+        return try {
+
+            val response = api.getMyTickets()
+
+            if (response.success) {
+
+                Result.success(
+                    response.data.toTicketUiStateList()
+                )
+
+            } else {
+
+                Result.failure(
+                    Exception(response.message)
+                )
+
+            }
+
+        } catch (e: Exception) {
+
+            Result.failure(e)
+
+        }
     }
 
 }

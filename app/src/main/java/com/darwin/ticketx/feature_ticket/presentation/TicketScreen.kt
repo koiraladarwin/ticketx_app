@@ -1,6 +1,7 @@
 package com.darwin.ticketx.feature_ticket.presentation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,7 +23,7 @@ import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -30,35 +32,34 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
-
-data class TicketUi(
-    val id: String,
-    val image: String,
-    val eventTitle: String,
-    val ticketType: String,
-    val venue: String,
-    val eventDate: String,
-    val price: String
-)
+import com.darwin.ticketx.feature_ticket.domain.model.TicketModel
+import com.darwin.ticketx.feature_ticket.presentation.viewmodel.TicketViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TicketScreen(
-    tickets: List<TicketUi>,
-    onTicketClick: (TicketUi) -> Unit
+    viewModel: TicketViewModel = hiltViewModel()
 ) {
+
+    val state by viewModel.state.collectAsState()
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
+
             TopAppBar(
                 title = {
                     Text(
@@ -72,40 +73,124 @@ fun TicketScreen(
                 )
             )
         }
+
     ) { padding ->
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(
-                start = 20.dp,
-                end = 20.dp,
-                top = 16.dp,
-                bottom = 20.dp
-            ),
-            verticalArrangement = Arrangement.spacedBy(18.dp)
-        ) {
 
-            items(
-                tickets,
-                key = { it.id }
-            ) { ticket ->
+        when {
 
-                TicketCard(
-                    ticket = ticket,
-                    onClick = {
-                        onTicketClick(ticket)
-                    }
-                )
+            state.isLoading -> {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    CircularProgressIndicator()
+                }
             }
 
+
+            state.error != null && state.tickets.isEmpty() -> {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Text(
+                        text = state.error ?: "Something went wrong",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+
+
+            state.tickets.isEmpty() -> {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Text(
+                        text = "No tickets available"
+                    )
+                }
+            }
+
+
+            else -> {
+
+                val refreshState = rememberPullToRefreshState()
+
+
+                PullToRefreshBox(
+                    isRefreshing = state.isRefreshing,
+                    onRefresh = {
+                        viewModel.refresh()
+                    },
+                    state = refreshState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
+
+
+                    LazyColumn(
+
+                        modifier = Modifier.fillMaxSize(),
+
+                        contentPadding = PaddingValues(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 16.dp,
+                            bottom = 24.dp
+                        ),
+
+                        verticalArrangement = Arrangement.spacedBy(18.dp)
+
+                    ) {
+
+
+                        items(
+                            items = state.tickets,
+                            key = {
+                                it.id
+                            }
+                        ) { ticket ->
+
+
+                            TicketCard(
+                                ticket = ticket,
+                                onClick = {
+                                    // ticket click
+                                }
+                            )
+                        }
+
+
+                        item {
+
+                            Spacer(
+                                modifier = Modifier.navigationBarsPadding()
+                            )
+                        }
+                    }
+                }
+            }
         }
-
     }
-
 }
 @Composable
 fun TicketCard(
-    ticket: TicketUi,
+    ticket: TicketModel,
     onClick: () -> Unit
 ) {
 
@@ -231,7 +316,7 @@ fun TicketInfoRow(
 }
 val sampleTickets = listOf(
 
-    TicketUi(
+    TicketModel(
         id = "1",
         image = "https://picsum.photos/600/400?1",
         eventTitle = "Kathmandu Music Festival 2026",
@@ -241,7 +326,7 @@ val sampleTickets = listOf(
         price = "Rs. 2,499"
     ),
 
-    TicketUi(
+    TicketModel(
         id = "2",
         image = "https://picsum.photos/600/400?2",
         eventTitle = "Tech Summit Nepal",

@@ -2,6 +2,7 @@ package com.darwin.ticketx.feature_ticket.domain.repository
 
 import com.darwin.ticketx.feature_ticket.domain.model.EventModel
 import com.darwin.ticketx.feature_ticket.domain.model.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.domain.model.TicketModel
 
 interface EventRepository {
 
@@ -15,4 +16,5 @@ interface EventRepository {
         ticketTypeId: String
     ): Result<Boolean>
 
+    suspend fun getMyTickets(): Result<List<TicketModel>>
 }

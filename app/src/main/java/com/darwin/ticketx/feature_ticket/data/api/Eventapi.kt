@@ -4,6 +4,7 @@ package com.darwin.ticketx.feature_ticket.data.api
 import com.darwin.ticketx.feature_ticket.data.dto.EventDetailsResponse
 import com.darwin.ticketx.feature_ticket.data.dto.EventsResponse
 import com.darwin.ticketx.feature_ticket.data.dto.PurchaseRequest
+import com.darwin.ticketx.feature_ticket.data.dto.TicketsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,4 +26,7 @@ interface EventApi {
     suspend fun purchaseTicket(
         @Body request: PurchaseRequest
     ): Response<Unit>
+
+    @GET("me/tickets")
+    suspend fun getMyTickets(): TicketsResponse
 }
