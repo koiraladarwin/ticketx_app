@@ -32,7 +32,7 @@ class AuthAuthenticator @Inject constructor(
             }
             return null
         }
-
+        Log.d("Testing", "authenticator triggered 3")
         val refreshToken =
             runBlocking {
                 tokenManager.getRefreshToken()
@@ -44,7 +44,7 @@ class AuthAuthenticator @Inject constructor(
                     }
                     return null
                 }
-
+        Log.d("Testing", "authenticator triggered 4")
         val newToken = try {
             runBlocking {
                 var res = refreshApi.refresh(
@@ -61,7 +61,7 @@ class AuthAuthenticator @Inject constructor(
             }
             null
         }
-
+        Log.d("Testing", "authenticator triggered 5")
         if (newToken == null) {
             runBlocking {
                 tokenManager.clearTokens()
