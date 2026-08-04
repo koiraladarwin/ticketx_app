@@ -1,4 +1,4 @@
-package com.darwin.ticketx.feature_event_details.presentation
+package com.darwin.ticketx.feature_ticket.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.darwin.ticketx.feature_ticket.presentation.components.TicketBottomSheet
-import com.darwin.ticketx.feature_ticket.presentation.eventDetailsSample
 
 
 @OptIn(ExperimentalMaterial3Api::class)

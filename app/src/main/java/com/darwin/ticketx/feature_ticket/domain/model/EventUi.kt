@@ -1,4 +1,4 @@
-package com.darwin.ticketx.feature_ticket.presentation.components
+package com.darwin.ticketx.feature_ticket.domain.model
 
 data class EventUi(
     val id: String,

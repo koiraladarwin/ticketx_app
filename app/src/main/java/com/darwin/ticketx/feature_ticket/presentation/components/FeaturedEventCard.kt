@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.darwin.ticketx.feature_ticket.domain.model.EventUi
 
 @Composable
 fun FeaturedEventCard(

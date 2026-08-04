@@ -1,7 +1,6 @@
 package com.darwin.ticketx.core.network
 
 import com.darwin.ticketx.di.PublicRetrofit
-import com.darwin.ticketx.feature_auth.data.api.AuthApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +20,7 @@ object PublicNetworkModule {
     fun providePublicRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(
-                NetworkConstants.BASE_URL
+                NetworkConstants.BASE_URL_AUTH
             )
             .addConverterFactory(
                 GsonConverterFactory.create()

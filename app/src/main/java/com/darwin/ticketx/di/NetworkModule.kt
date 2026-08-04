@@ -2,6 +2,7 @@ package com.darwin.ticketx.core.network
 
 
 import com.darwin.ticketx.di.AuthRetrofit
+import com.darwin.ticketx.di.AuthTicketRetrofit
 import com.darwin.ticketx.di.PublicRetrofit
 import dagger.Module
 import dagger.Provides
@@ -40,7 +41,24 @@ object NetworkModule {
 
         return Retrofit.Builder()
             .baseUrl(
-                NetworkConstants.BASE_URL
+                NetworkConstants.BASE_URL_AUTH
+            )
+            .client(client)
+            .addConverterFactory(
+                GsonConverterFactory.create()
+            )
+            .build()
+    }
+    @Provides
+    @Singleton
+    @AuthTicketRetrofit
+    fun provideTicketAuthRetrofit(
+        client: OkHttpClient
+    ): Retrofit {
+
+        return Retrofit.Builder()
+            .baseUrl(
+                NetworkConstants.BASE_URL_TICKET
             )
             .client(client)
             .addConverterFactory(

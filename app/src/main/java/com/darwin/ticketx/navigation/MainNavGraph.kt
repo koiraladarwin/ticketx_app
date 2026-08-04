@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.*
-import com.darwin.ticketx.feature_event_details.presentation.EventDetailsScreen
+import com.darwin.ticketx.feature_ticket.presentation.EventDetailsScreen
 import com.darwin.ticketx.feature_ticket.presentation.HomeScreen
-import com.darwin.ticketx.feature_ticket.presentation.sampleEvents
+import com.darwin.ticketx.feature_user.presentation.screens.ProfileScreen
 import com.darwin.ticketx.ui.theme.Border
 
 fun NavGraphBuilder.mainNavGraph(
@@ -157,14 +157,13 @@ fun MainRoot() {
 
             composable(Screen.Home.route) {
 
-                HomeScreen(events = sampleEvents) { event ->
-
-                    navController.navigate(
-                        Screen.EventDetails.createRoute(event.id)
-                    )
-
-                }
-
+                HomeScreen(
+                    onEventClick = { event ->
+                        navController.navigate(
+                            Screen.EventDetails.createRoute(event.id)
+                        )
+                    }
+                )
             }
 
             composable(Screen.Tickets.route) {
@@ -172,9 +171,7 @@ fun MainRoot() {
             }
 
             composable(Screen.Profile.route) {
-                ProfileScreen {
-                    navController.navigate(Screen.Settings.route)
-                }
+                ProfileScreen()
             }
 
             composable(
@@ -212,21 +209,6 @@ private fun TicketScreen() {
         Text("Tickets")
     }
 }
-
-@Composable
-private fun ProfileScreen(
-    onSettings: () -> Unit
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(onClick = onSettings) {
-            Text("Settings")
-        }
-    }
-}
-
 
 
 @Composable

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import com.darwin.ticketx.feature_ticket.domain.model.EventUi
 import kotlin.math.absoluteValue
 
 @SuppressLint("FrequentlyChangingValue")
