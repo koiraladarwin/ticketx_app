@@ -15,12 +15,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object PublicNetworkModule {
 
-
     @Provides
     @Singleton
     @PublicRetrofit
     fun providePublicRetrofit(): Retrofit {
-
         return Retrofit.Builder()
             .baseUrl(
                 NetworkConstants.BASE_URL
@@ -30,7 +28,5 @@ object PublicNetworkModule {
             )
             .build()
     }
-
-
 
 }

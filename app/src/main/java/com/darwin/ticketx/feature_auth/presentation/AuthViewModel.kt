@@ -1,5 +1,6 @@
 package com.darwin.ticketx.feature_auth.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.darwin.ticketx.feature_auth.domain.repository.AuthRepository
@@ -18,6 +19,7 @@ class AuthViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun login(email: String, password: String) {
+        Log.d("Testing","login")
         viewModelScope.launch {
             _state.value = AuthState.Loading
 

@@ -59,9 +59,13 @@ dependencies {
     //navigation
     implementation(libs.androidx.navigation.compose)
     //coil
-    implementation(libs.coil.compose)
+    implementation("io.coil-kt:coil-compose:2.7.0")
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    //icons
+    implementation(libs.androidx.compose.material.icons.extended)
+    //pager
+    implementation("androidx.compose.foundation:foundation")
 }

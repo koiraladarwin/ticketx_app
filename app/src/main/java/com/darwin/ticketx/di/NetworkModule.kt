@@ -16,8 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-
     @Provides
     @Singleton
     fun provideOkHttp(
@@ -33,15 +31,12 @@ object NetworkModule {
 
     }
 
-
-
     @Provides
     @Singleton
     @AuthRetrofit
     fun provideRetrofit(
         client: OkHttpClient
     ): Retrofit {
-
 
         return Retrofit.Builder()
             .baseUrl(
@@ -53,16 +48,17 @@ object NetworkModule {
             )
             .build()
     }
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object AuthNetworkModule {
 
-        @Provides
-        @Singleton
-        fun provideRefreshApi(
-            @PublicRetrofit retrofit: Retrofit
-        ): RefreshApi {
-            return retrofit.create(RefreshApi::class.java)
-        }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+object AuthNetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideRefreshApi(
+        @PublicRetrofit retrofit: Retrofit
+    ): RefreshApi {
+        return retrofit.create(RefreshApi::class.java)
     }
 }

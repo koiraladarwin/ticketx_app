@@ -3,6 +3,7 @@ package com.darwin.ticketx.core.network
 
 import android.util.Log
 import com.darwin.ticketx.core.local.TokenManager
+import com.darwin.ticketx.core.session.SessionManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
     private val tokenManager: TokenManager,
-    private val refreshApi: RefreshApi
+    private val refreshApi: RefreshApi,
+    private val sessionManager: SessionManager,
 ) : Authenticator {
 
 
@@ -50,6 +52,7 @@ class AuthAuthenticator @Inject constructor(
         if (newToken == null) {
             runBlocking {
                 tokenManager.clearTokens()
+                sessionManager.logout()
             }
             return null
         }

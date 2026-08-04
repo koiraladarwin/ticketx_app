@@ -15,25 +15,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import com.darwin.ticketx.core.session.SessionManager
 import com.darwin.ticketx.feature_auth.presentation.AuthScreen
+import com.darwin.ticketx.navigation.AppNavGraph
 import com.darwin.ticketx.ui.theme.TicketXTheme
 import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             TicketXTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AuthScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        onLoginSuccess = {user->
-                            Log.d("Testing",user.username)
-                        }
-                    )
-                }
+                AppNavGraph(
+                    sessionManager = sessionManager
+                )
             }
         }
     }
