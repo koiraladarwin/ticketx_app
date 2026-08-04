@@ -7,7 +7,7 @@ fun TicketTypeDto.toTicketTypeUi(): TicketTypeUi {
     return TicketTypeUi(
         id = id,
         name = name,
-        description = description,
+        description = description ?: "",
         price = price,
         available = remaining
     )

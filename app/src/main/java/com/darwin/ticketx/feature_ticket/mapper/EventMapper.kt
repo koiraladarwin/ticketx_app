@@ -53,7 +53,7 @@ fun DataDetailsDto.toEventDetailsUi(): EventDetailsUi {
         date = event_start_at.formatEventDate(),
         location = venue,
         category = "Event",
-        tags = listOf("Music,Festival,Dance"),
+        tags = listOf("Music","Festival","Dance"),
         ticketTypes = ticket_types.map {
             it.toTicketTypeUi()
         }

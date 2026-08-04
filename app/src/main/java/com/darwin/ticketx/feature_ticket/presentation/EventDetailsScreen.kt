@@ -20,18 +20,64 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.darwin.ticketx.feature_ticket.presentation.components.TicketBottomSheet
+import com.darwin.ticketx.feature_ticket.presentation.viewmodel.EventDetailsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
 fun EventDetailsScreen(
     eventId: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: EventDetailsViewModel = hiltViewModel()
 ) {
-    val event = eventDetailsSample
+
+    val state by viewModel.state.collectAsState()
+
+
+    LaunchedEffect(eventId) {
+        viewModel.loadEvent(eventId)
+    }
+
+
+    if (state.isLoading) {
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+
+            CircularProgressIndicator()
+
+        }
+
+        return
+    }
+
+
+    if (state.error != null) {
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+
+            Text(
+                text = state.error ?: "Something went wrong",
+                color = MaterialTheme.colorScheme.error
+            )
+
+        }
+
+        return
+    }
+
+
+    val event = state.event ?: return
+
+
     var showTicketSheet by remember {
         mutableStateOf(false)
     }
@@ -68,7 +114,7 @@ fun EventDetailsScreen(
 
 
                         Text(
-                            text = "Rs ${event.ticketTypes.minOf { it.price }}",
+                            text = "Rs ${event.ticketTypes.minOfOrNull { it.price } ?: 0}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )

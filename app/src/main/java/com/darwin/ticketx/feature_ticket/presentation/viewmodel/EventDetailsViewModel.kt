@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.darwin.ticketx.feature_ticket.domain.repository.EventRepository
 import com.darwin.ticketx.feature_ticket.presentation.EventDetailsUi
+import com.darwin.ticketx.feature_ticket.presentation.EventDetailsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,12 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-data class EventDetailsUiState(
-    val event: EventDetailsUi? = null,
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
 
 
 @HiltViewModel
