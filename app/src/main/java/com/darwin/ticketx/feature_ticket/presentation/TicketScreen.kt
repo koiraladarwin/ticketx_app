@@ -37,6 +37,9 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,7 +48,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.darwin.ticketx.core.utils.QrGenerator
 import com.darwin.ticketx.feature_ticket.domain.model.TicketModel
+import com.darwin.ticketx.feature_ticket.presentation.components.TicketQrDialog
 import com.darwin.ticketx.feature_ticket.presentation.viewmodel.TicketViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,9 +60,15 @@ fun TicketScreen(
 
     val state by viewModel.state.collectAsState()
 
+    var selectedTicketId by remember {
+        mutableStateOf<String?>(null)
+    }
+
+
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
+
         topBar = {
 
             TopAppBar(
@@ -128,6 +139,7 @@ fun TicketScreen(
 
             else -> {
 
+
                 val refreshState = rememberPullToRefreshState()
 
 
@@ -170,7 +182,9 @@ fun TicketScreen(
                             TicketCard(
                                 ticket = ticket,
                                 onClick = {
-                                    // ticket click
+
+                                    selectedTicketId = ticket.id
+
                                 }
                             )
                         }
@@ -185,6 +199,34 @@ fun TicketScreen(
                     }
                 }
             }
+        }
+
+
+        selectedTicketId?.let { ticketId ->
+
+
+            val qrJson = """
+                {
+                  "ticket_id": "$ticketId"
+                }
+            """.trimIndent()
+
+
+            val qrBitmap = remember(ticketId) {
+
+                QrGenerator.generate(
+                    content = qrJson
+                )
+
+            }
+
+
+            TicketQrDialog(
+                qrBitmap = qrBitmap,
+                onDismiss = {
+                    selectedTicketId = null
+                }
+            )
         }
     }
 }

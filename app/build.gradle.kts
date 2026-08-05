@@ -68,4 +68,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     //pager
     implementation("androidx.compose.foundation:foundation")
+
+    //qr code generator
+    implementation("com.google.zxing:core:3.5.3")
 }
